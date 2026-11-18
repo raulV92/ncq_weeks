@@ -1,0 +1,16 @@
+
+version: 2
+
+sources:
+  - name: reference
+    description: "Reference data maintained manually outside dbt."
+    schema: ins_cri_TLOG_ONBOARDING_NCQ_dbt
+    tables:
+      - name: publicos_privados_ncq                 # the name dbt uses: source('reference', 'publicos_privados_ncq')
+        identifier: ref_publicos_privados_ncq       # the real object name in Databricks
+        description: >
+          1:1 mapping of public store codes (publico) to private store codes (SUCURSAL).
+          Manually created view over Parquet files at dbfs:/user/hive/warehouse/publicos_privados_ncq
+          (the cluster can't write tables to our schema's storage).
+          To update: overwrite the Parquet files at that path; the view picks up the change.
+

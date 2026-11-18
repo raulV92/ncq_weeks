@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: int_sales__joined_to_physical_store
+    description: >
+      One row per sales line (same grain as stg_tlog__sales), enriched with the
+      physical store. store_key = public code when mapped, own code otherwise.
+    columns:
+      - name: store_key
+        data_tests: [not_null]
+      - name: is_mapped
+        description: "False when the store code is not in the public/private mapping."
+
+  - name: int_sales__item_store_week
+    description: >
+      One row per physical store × week × item, with public and private measures
+      side by side. NULL measures mean the item had no lines on that side.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [store_key, week_number, CDM_PRODUCT_ID]

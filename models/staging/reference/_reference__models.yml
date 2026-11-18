@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_reference__publicos_privados
+    description: "Public ↔ private store code pairs. One row per physical store."
+    columns:
+      - name: public_store_id
+        data_tests: [unique, not_null]
+      - name: private_store_id
+        data_tests: [unique, not_null]

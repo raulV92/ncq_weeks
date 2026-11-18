@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_tlog__sales
+    description: "Cleaned TLOG lines with week and code type parsed from source_file."
+    columns:
+      - name: week_number
+        description: "Week number parsed from 'SEMANA<n>' in the file name."
+        data_tests: [not_null]
+      - name: code_type
+        description: "public = file contains PUBLIC_CODES; private = standard or PHARMA file."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['public', 'private']
+
+      - name: CDM_STORE_ID
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_reference__publicos_privados')
+                field: private_store_id
+              config:
+                where: "code_type = 'private'"
+                severity: warn
+          - relationships:
+              arguments:
+                to: ref('stg_reference__publicos_privados')
+                field: public_store_id
+              config:
+                where: "code_type = 'public'"
+                severity: warn

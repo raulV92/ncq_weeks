@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: tlog
+    description: "Raw transaction log ingested from the weekly NLN_NCQ files."
+    schema: ins_cri_TLOG_ONBOARDING_NCQ_dbt
+    tables:
+      - name: tlog          # change to tlog_sales if that's the real table name (see Q1)
+        description: "One row per item sold on a ticket. ticket_id repeats per item."
+        columns:
+          - name: CDM_STORE_ID
+            data_tests: [not_null]
+          - name: CDM_TRANSACTION_ID
+            data_tests: [not_null]
+          - name: CDM_PRODUCT_ID
+            data_tests: [not_null]
+          - name: input_filename
+            data_tests: [not_null]
